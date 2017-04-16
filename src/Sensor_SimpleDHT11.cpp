@@ -28,11 +28,23 @@ namespace Sensor
     // Check if it is time to take a new reading
     if (_fequencyTimer.isExpired())
     {
-      newReadingAvailable = true;
-      _fequencyTimer.setTimeout(_frequencySeconds * 1000);
-      _fequencyTimer.restart();
-      _temperature = _dht->readTemperature(!_celsius);
-      _humidity = _dht->readHumidity();
+      float valueT = 0;
+      float valueH = 0;
+      valueT = _dht->readTemperature(!_celsius);
+      valueH = _dht->readHumidity();
+      // Check for error reading
+      if (isnan(valueT) || isnan(valueH)) {
+        // There was an error so re-try the sensor in 3 seconds
+        _fequencyTimer.setTimeout(3000);
+        _fequencyTimer.restart();
+      }
+      else {
+        newReadingAvailable = true;
+        _temperature = valueT;
+        _humidity = valueH;
+        _fequencyTimer.setTimeout(_frequencySeconds * 1000);
+        _fequencyTimer.restart();
+      }
     }
 
 
