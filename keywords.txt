@@ -1,0 +1,5 @@
+SensorSimpleDHT11	KEYWORD1
+setup	KEYWORD2
+loop	KEYWORD2
+getTemperature	KEYWORD2
+getHumidity	KEYWORD2
